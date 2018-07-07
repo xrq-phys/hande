@@ -192,4 +192,43 @@ contains
 
     end subroutine slater_condon1_hub_real_excit
 
+    pure function get_one_e_int_hub_real(sys, i, a) result(one_e_int)
+    
+        ! A pure function wrapper for get_one_e_int_real to become a pointer target.
+
+        ! In:
+        !    sys: system being studied
+        !    i, a: indices of real-space basis functions.
+        ! Returns:
+        !    < i | T | a > where T is the kinetic energy operator.
+
+        use system, only: sys_t
+        use real_lattice, only: get_one_e_int_real
+
+        real(p) :: one_e_int
+        type(sys_t), intent(in) :: sys
+        integer, intent(in) :: i, a
+
+        one_e_int = get_one_e_int_real(sys ,i, a)
+
+    end function get_one_e_int_hub_real
+
+    pure function get_two_e_int_hub_real(sys, i, j, a, b) result(zero)
+
+        ! In:
+        !    sys: system being studied.
+        !    i, j, a, b: indices of real-space basis functions.
+        ! Returns:
+        !    0 (as real space Hubbard model has no nexcit=2 Hamiltonian enrty)
+
+        use system, only: sys_t
+
+        real(p) :: zero
+        type(sys_t), intent(in) :: sys
+        integer, intent(in) :: i, j, a, b
+
+        zero = 0
+
+    end function get_two_e_int_hub_real
+
 end module hamiltonian_hub_real

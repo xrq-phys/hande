@@ -218,8 +218,8 @@ contains
         use excit_gen_ringium
         use excit_gen_ueg, only: gen_excit_ueg_no_renorm
         use hamiltonian_chung_landau, only: slater_condon0_chung_landau
-        use hamiltonian_hub_k, only: slater_condon0_hub_k
-        use hamiltonian_hub_real, only: slater_condon0_hub_real
+        use hamiltonian_hub_k, only: slater_condon0_hub_k, get_one_e_int_hub_k_target, get_two_e_int_hub_k_target
+        use hamiltonian_hub_real, only: slater_condon0_hub_real, get_one_e_int_hub_real, get_two_e_int_hub_real
         use hamiltonian_heisenberg, only: diagonal_element_heisenberg, diagonal_element_heisenberg_staggered
         use hamiltonian_molecular, only: slater_condon0_mol, double_counting_correction_mol, hf_hamiltonian_energy_mol, &
                                          slater_condon1_mol_excit, slater_condon2_mol_excit, get_one_e_int_mol, get_two_e_int_mol
@@ -275,6 +275,9 @@ contains
                 call stop_all('init_proc_pointers', 'Selected excitation generator not implemented.')
             end select
 
+            get_one_e_int_ptr => get_one_e_int_hub_k_target
+            get_two_e_int_ptr => get_two_e_int_hub_k_target
+
         case(hub_real, chung_landau)
 
             ! The Hubbard model in a local orbital basis and the Chung--Landau
@@ -299,6 +302,11 @@ contains
             case default
                 call stop_all('init_proc_pointers', 'Selected excitation generator not implemented.')
             end select
+
+            if (sys%system == hub_real) then
+                get_one_e_int_ptr => get_one_e_int_hub_real
+                get_two_e_int_ptr => get_two_e_int_hub_real
+            end if
 
         case(heisenberg)
 

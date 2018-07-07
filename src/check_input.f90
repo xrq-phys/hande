@@ -350,7 +350,7 @@ contains
 
 
         use qmc_data, only: ccmc_in_t
-        use system, only: sys_t, read_in
+        use system, only: sys_t, read_in, hub_real, hub_k
         use errors, only: stop_all
 
         type(sys_t), intent(in) :: sys
@@ -368,7 +368,8 @@ contains
             call stop_all(this, "cluster_multispawn_threshold must be positive")
         end if
 
-        if (ccmc_in%density_matrices .and. sys%system /= read_in) then
+        if (ccmc_in%density_matrices .and. &
+            sys%system /= read_in .and. sys%system /= hub_real .and. sys%system /= hub_k) then
             call stop_all(this, "CCMC density matrices not implemented for this system type.")
         end if
 

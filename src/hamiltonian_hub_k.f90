@@ -233,4 +233,43 @@ contains
 
     end subroutine slater_condon2_hub_k_excit
 
+    pure function get_two_e_int_hub_k_target(sys, i, j, a, b) result(two_e_int)
+    
+        ! A pure function wrapper for get_two_e_int_hub_k to become a pointer target.
+
+        ! In:
+        !    sys: system being studied
+        !    a, b, i, j: indices of momentum-space basis functions.
+        ! Returns:
+        !    The anti-symmetrized integral < ij || ab >.
+
+        use system, only: sys_t
+        use hubbard_k, only: get_two_e_int_hub_k
+
+        real(p) :: two_e_int
+        type(sys_t), intent(in) :: sys
+        integer, intent(in) :: i, j, a, b
+
+        two_e_int = get_two_e_int_hub_k(sys, i, j, a, b)
+
+    end function get_two_e_int_hub_k_target
+
+    pure function get_one_e_int_hub_k_target(sys, i, a) result(zero)
+
+        ! In:
+        !    sys: system being studied
+        !    a, i: indices of momentum-space basis functions.
+        ! Returns:
+        !    0 (as k-space Hubbard model has no 1-body part).
+
+        use system, only: sys_t
+
+        real(p) :: zero
+        type(sys_t), intent(in) :: sys
+        integer, intent(in) :: i, a
+
+        zero = 0
+
+    end function get_one_e_int_hub_k_target
+
 end module hamiltonian_hub_k
