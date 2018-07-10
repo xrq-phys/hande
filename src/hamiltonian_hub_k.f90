@@ -254,21 +254,27 @@ contains
 
     end function get_two_e_int_hub_k_target
 
-    pure function get_one_e_int_hub_k_target(sys, i, a) result(zero)
+    pure function get_one_e_int_hub_k_target(sys, i, a) result(one_e_int)
 
         ! In:
-        !    sys: system being studied
+        !    sys: system being studied.
         !    a, i: indices of momentum-space basis functions.
         ! Returns:
-        !    0 (as k-space Hubbard model has no 1-body part).
+        !    kinetic part of Hamiltonian. 
 
         use system, only: sys_t
 
-        real(p) :: zero
+        real(p) :: one_e_int
         type(sys_t), intent(in) :: sys
         integer, intent(in) :: i, a
 
-        zero = 0
+        if (i == a) then
+            ! k-space Hubbard model has no off-diagonal 1-body part.
+            one_e_int = sys%basis%basis_fns(i)%sp_eigv
+        else
+            ! k-space Hubbard model has no off-diagonal 1-body part.
+            one_e_int = 0
+        end if
 
     end function get_one_e_int_hub_k_target
 

@@ -213,21 +213,35 @@ contains
 
     end function get_one_e_int_hub_real
 
-    pure function get_two_e_int_hub_real(sys, i, j, a, b) result(zero)
+    pure function get_two_e_int_hub_real(sys, i, j, a, b) result(two_e_int)
 
         ! In:
         !    sys: system being studied.
         !    i, j, a, b: indices of real-space basis functions.
         ! Returns:
-        !    0 (as real space Hubbard model has no nexcit=2 Hamiltonian enrty)
+        !    Potential part of Hamiltonian.
 
         use system, only: sys_t
 
-        real(p) :: zero
+        real(p) :: two_e_int
         type(sys_t), intent(in) :: sys
         integer, intent(in) :: i, j, a, b
 
-        zero = 0
+        associate(bas=>sys%basis%basis_fns)
+            ! Assersion of same-site opposite-spin orbitals.
+            if (bas(i)%spatial_index == bas(j)%spatial_index .and. &
+                bas(j)%spatial_index == bas(a)%spatial_index .and. &
+                bas(a)%spatial_index == bas(b)%spatial_index .and. &
+                bas(i)%ms /= bas(j)%ms .and. bas(a)%ms /= bas(b)%ms) then
+                if (bas(i)%ms == bas(a)%ms) then
+                    two_e_int = sys%hubbard%u
+                else
+                    two_e_int = -sys%hubbard%u
+                end if
+            else
+                two_e_int = 0
+            end if
+        end associate
 
     end function get_two_e_int_hub_real
 
