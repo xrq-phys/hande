@@ -500,7 +500,8 @@ contains
         if (.not.restart_proj_est) then
             call initial_cc_projected_energy(sys, qs, qmc_in%seed+iproc, logging_info, cumulative_abs_real_pops, nparticles_old)
         end if
-        call initial_qmc_status(sys, qmc_in, qs, nparticles_old, doing_ccmc=.true., io_unit=io_unit)
+        call initial_qmc_status(sys, qmc_in, qs, nparticles_old, &
+                                doing_ccmc=.true., io_unit=io_unit, rdm_energy=ccmc_in%density_matrices)
 
         ! Initialise timer.
         call cpu_time(t1)

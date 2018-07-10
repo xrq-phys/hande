@@ -534,7 +534,7 @@ contains
 
 ! --- Output routines ---
 
-    subroutine initial_qmc_status(sys, qmc_in, qs, ntot_particles, doing_ccmc, io_unit)
+    subroutine initial_qmc_status(sys, qmc_in, qs, ntot_particles, doing_ccmc, io_unit, rdm_energy)
 
         ! Calculate the projected energy based upon the initial walker
         ! distribution (either via a restart or as set during initialisation)
@@ -561,15 +561,16 @@ contains
         real(dp), intent(in) :: ntot_particles(qs%psip_list%nspaces)
         logical, intent(in) :: doing_ccmc
         integer, optional, intent(in) :: io_unit
+        logical, optional, intent(in) :: rdm_energy
         
         if (parent) then
             if (doing_ccmc) then
                 qs%estimators%nattempts = nint(qs%estimators%D0_population)
                 call write_qmc_report(qmc_in, qs, 0, ntot_particles, 0.0, .true., .false., cmplx_est=sys%read_in%comp, &
-                                        nattempts=.true., io_unit=io_unit)
+                                      rdm_energy=rdm_energy, nattempts=.true., io_unit=io_unit)
             else
                 call write_qmc_report(qmc_in, qs, 0, ntot_particles, 0.0, .true., .false., cmplx_est=sys%read_in%comp, &
-                    io_unit=io_unit)
+                                      rdm_energy=rdm_energy, io_unit=io_unit)
             end if
         end if
 
