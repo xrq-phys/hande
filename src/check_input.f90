@@ -371,7 +371,7 @@ contains
         end if
 
         if (ccmc_in%density_matrices .and. sys%system /= read_in) then
-            call stop_all(this, "2-body density matrices not implemented for this system type.")
+            call stop_all(this, "CCMC density matrices not implemented for this system type.")
         end if
 
         if (sys%read_in%comp .and. ccmc_in%linked) call stop_all(this, 'Linked complex CCMC not yet implemented')

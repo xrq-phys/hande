@@ -1416,7 +1416,7 @@ contains
 
     subroutine calculate_green_function(sys, psip_list, weighted_sampling, green)
 
-        ! Calculate 2-RDM (Green Function) for the current density matrix.
+        ! Calculate 2-RDM (Green's Function) for the current density matrix.
 
         ! In:
         !   sys: system being studied.
